@@ -34,10 +34,11 @@
     selection: hold
   when: bitflux_enableKernel == true
 
+# Installs the Latest version, enable updates!
 - name: Replace Kernel with Bitflux Kernel (optional - enables proactive memory management)
   ansible.builtin.apt:
     name: linux-image-swaphints
-    state: present
+    state: latest
   when: bitflux_enableKernel == true
 
 - name: Enable swaphints module on boot. (optional - enables proactive memory management)
