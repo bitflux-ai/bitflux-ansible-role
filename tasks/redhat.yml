@@ -15,14 +15,14 @@
     path: /etc/yum.repos.d/*-BaseOS.repo
     search_string: 'exclude='
     line: 'exclude=kernel kernel-*'
-    when: {{ bitflux.enableKernel == true }}
+    when: ("{{ bitflux.enableKernel }}" == true )
 
 - name: Replace Kernel with Bitflux Kernel (optional - enables proactive memory management)
   ansible.builtin.dnf:
     name: kernel
     enablerepo: bitflux
     state: present
-    when: {{ bitflux.enableKernel == true }}
+    when: ("{{ bitflux.enableKernel }}" == true )
 
 - name: Enable swaphints module on boot. (optional - enables proactive memory management)
     copy:
@@ -31,4 +31,4 @@
       mode: '0644'
       owner: root
       group: root
-    when: {{ bitflux.enableKernel == true }}
+    when: ("{{ bitflux.enableKernel }}" == true )
