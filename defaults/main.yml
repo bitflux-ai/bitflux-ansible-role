@@ -2,6 +2,6 @@
 # defaults file for bitflux
 
 bitflux:
- deviceIdTemplate: {{inventory_hostname}}
+ deviceIdTemplate: "{{inventory_hostname}}"
  key: 'retrieve key from cloud.bitflux.ai credentials page'
  enableKernel: false
