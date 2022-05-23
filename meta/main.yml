@@ -32,8 +32,8 @@ galaxy_info:
   platforms:
   - name: Ubuntu
     versions:
-    - 20.04
-  - name: Rocky
+    - focal
+  - name: EL
     versions:
     - 8
 
