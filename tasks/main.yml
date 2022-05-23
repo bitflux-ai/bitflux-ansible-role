@@ -9,17 +9,17 @@
 - name: Deploy access key for Bitflux
   lineinfile:
     path: /opt/bitflux/config/bitflux/bitfluxcollector.conf
-    search_string: 'licensekey='
-    line: 'licensekey={{bitflux.key}}'
+    regexp: '^licensekey='
+    line: "licensekey={{bitflux.key}}"
   register: settingsChangedLicense
 
 ## Notice, the template should include something unique, like hostname, or something form inventory so each machine
 ## gets its own id. just like avoiding duplicate host names on a network. (default is hostname)
 - name: Deploy Templated DeviceId for Bitflux Dashboard
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /opt/bitflux/config/bitflux/bitfluxcollector.conf
-    search_string: 'deviceid='
-    line: 'deviceid={{bitflux.deviceIdTemplate}}'
+    regexp: '^deviceid='
+    line: "deviceid={{bitflux.deviceIdTemplate}}"
   register: settingsChangedId
 
 - name: Trigger Bitflux service restart on settings changes.
@@ -40,4 +40,4 @@
       - 'Machines that have just had their kernel updated to Bitflux will need to be rebooted'
       - ' prior to proactive reclaim taking effect.'
       - 'You will still be able to monitor and identify memory usage in the dashboard before rebooting.'
-  when: ("{{ bitflux.enableKernel }}" == true )
+  when: bitflux.enableKernel == true
