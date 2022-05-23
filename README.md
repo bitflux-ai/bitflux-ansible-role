@@ -30,7 +30,7 @@ Including an example of how to use your role (for instance, with variables passe
 
     - hosts: servers
       roles:
-         - { role: bitflux, bitflux_enableKernel: true, bitflux_key: "{{mykeyvar}}", bitflux_deviceIdTemplate: "{{inventory_hostname_short}}-mysql" }
+         - { role: peterjweir.bitflux, bitflux_enableKernel: true, bitflux_key: "{{mykeyvar}}", bitflux_deviceIdTemplate: "{{inventory_hostname_short}}-mysql" }
 
 License
 -------
