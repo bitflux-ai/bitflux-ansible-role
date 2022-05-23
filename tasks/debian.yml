@@ -15,14 +15,23 @@
     name: bitfluxcollector
     state: present
 
-- name: Enable Bitflux Kernel Updates over standard kernel (optional - enables proactive memory management)
+# These 3 items are broken out individually, because the module is abysmal at handling loops and lists
+- name: Enable Bitflux Kernel Updates over standard kernel 1/3 (optional - enables proactive memory management)
   dpkg_selections:
-    name: "{{ item }}"
+    name: "linux-generic"
     selection: hold
-  loop:
-    - linux-generic
-    - linux-image-generic
-    - linux-headers-generic
+  when: bitflux_enableKernel == true
+
+- name: Enable Bitflux Kernel Updates over standard kernel 2/3 (optional - enables proactive memory management)
+  dpkg_selections:
+    name: "linux-image-generic"
+    selection: hold
+  when: bitflux_enableKernel == true
+
+- name: Enable Bitflux Kernel Updates over standard kernel 3/3 (optional - enables proactive memory management)
+  dpkg_selections:
+    name: "linux-headers-generic"
+    selection: hold
   when: bitflux_enableKernel == true
 
 - name: Replace Kernel with Bitflux Kernel (optional - enables proactive memory management)
