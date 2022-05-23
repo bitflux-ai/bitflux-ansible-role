@@ -19,10 +19,10 @@
   dpkg_selections:
     name: "{{ item }}"
     selection: hold
-    loop:
-      - linux-generic
-      - linux-image-generic
-      - linux-headers-generic
+  loop:
+    - linux-generic
+    - linux-image-generic
+    - linux-headers-generic
   when: bitflux_enableKernel == true
 
 - name: Replace Kernel with Bitflux Kernel (optional - enables proactive memory management)
