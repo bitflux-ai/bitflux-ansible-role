@@ -38,5 +38,3 @@
     owner: root
     group: root
   when: bitflux_enableKernel == true
-
-
