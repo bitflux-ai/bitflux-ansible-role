@@ -1,0 +1,42 @@
+---
+# Install Debian Version of bitflux.
+- name: Add an Apt signing key, uses whichever key is at the URL
+  ansible.builtin.apt_key:
+    url: https://mirror.bitflux.ai/repository/keys/keys/bitflux_pub.key
+    state: present
+
+- name: Add Bitflux Repository to aptitude
+  ansible.builtin.apt_repository:
+    repo: deb https://mirror.bitflux.ai/repository/focalRelease focal main
+    state: present
+
+- name: Install main bitflux collector package
+  ansible.builtin.apt:
+    name: bitfluxcollector
+    state: present
+
+- name: Enable Bitflux Kernel Updates over standard kernel (optional - enables proactive memory management)
+  dpkg_selections:
+    name:
+      - linux-generic
+      - linux-image-generic
+      - linux-headers-generic
+    selection: hold
+    when: {{ bitflux.enableKernel == true }}
+
+- name: Replace Kernel with Bitflux Kernel (optional - enables proactive memory management)
+  ansible.builtin.apt:
+    name: linux-image-swaphints
+    state: present
+    when: {{ bitflux.enableKernel == true }}
+
+- name: Enable swaphints module on boot. (optional - enables proactive memory management)
+    copy:
+      dest: "/etc/modules-load.d/swaphints.conf"
+      content: 'swaphints'
+      mode: '0644'
+      owner: root
+      group: root
+      when: {{ bitflux.enableKernel == true }}
+
+

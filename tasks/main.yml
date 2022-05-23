@@ -1,0 +1,43 @@
+---
+# tasks file for bitflux
+- include: debian.yml
+  when: {{ansible_facts['os_family'] == 'Debian'}}
+
+- include: redhat.yml
+  when: {{ansible_facts['os_family'] == 'RedHat'}}
+
+- name: Deploy access key for Bitflux
+  lineinfile:
+    path: /opt/bitflux/config/bitflux/bitfluxcollector.conf
+    search_string: 'licensekey='
+    line: 'licensekey={{bitflux.key}}'
+  register: settingsChangedLicense
+
+## Notice, the template should include something unique, like hostname, or something form inventory so each machine
+## gets its own id. just like avoiding duplicate host names on a network. (default is hostname)
+- name: Deploy Templated DeviceId for Bitflux Dashboard
+  lineinfile:
+    path: /opt/bitflux/config/bitflux/bitfluxcollector.conf
+    search_string: 'deviceid='
+    line: 'deviceid={{bitflux.deviceIdTemplate}}'
+  register: settingsChangedId
+
+- name: Trigger Bitflux service restart on settings changes.
+  ansible.builtin.systemd:
+    name: bitfluxcollector.service
+    state: restarted
+  when: (settingsChangedId.changed || settingsChangedLicense.changed)
+
+- name: Enable Bitflux Service
+  ansible.builtin.systemd:
+    name: bitfluxcollector.service
+    state: started
+    enabled: yes
+
+- name: Display Kernel Post Install Message
+  debug:
+    msg:
+      - 'Machines that have just had their kernel updated to Bitflux will need to be rebooted'
+      - ' prior to proactive reclaim taking effect.'
+      - 'You will still be able to monitor and identify memory usage in the dashboard before rebooting.'
+  when: {{ bitflux.enableKernel == true }}
