@@ -17,11 +17,12 @@
 
 - name: Enable Bitflux Kernel Updates over standard kernel (optional - enables proactive memory management)
   dpkg_selections:
-    name:
+    name: "{{ item }}"
+    selection: hold
+    loop:
       - linux-generic
       - linux-image-generic
       - linux-headers-generic
-    selection: hold
   when: bitflux_enableKernel == true
 
 - name: Replace Kernel with Bitflux Kernel (optional - enables proactive memory management)
