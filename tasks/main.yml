@@ -26,7 +26,7 @@
   ansible.builtin.systemd:
     name: bitfluxcollector.service
     state: restarted
-  when: (settingsChangedId.changed || settingsChangedLicense.changed)
+  when: (settingsChangedId.changed) or (settingsChangedLicense.changed)
 
 - name: Enable Bitflux Service
   ansible.builtin.systemd:
