@@ -22,13 +22,13 @@
       - linux-image-generic
       - linux-headers-generic
     selection: hold
-  when: bitflux.enableKernel == true
+  when: bitflux_enableKernel == true
 
 - name: Replace Kernel with Bitflux Kernel (optional - enables proactive memory management)
   ansible.builtin.apt:
     name: linux-image-swaphints
     state: present
-  when: bitflux.enableKernel == true
+  when: bitflux_enableKernel == true
 
 - name: Enable swaphints module on boot. (optional - enables proactive memory management)
   copy:
@@ -37,6 +37,6 @@
     mode: '0644'
     owner: root
     group: root
-  when: bitflux.enableKernel == true
+  when: bitflux_enableKernel == true
 
 
